@@ -1,11 +1,12 @@
-var playerList = [];
 var timer = 0;
 /*var teamA = [];
 var teamB = [];*/
+localStorage.setItem("playerList", "");
+document.getElementById("player").value = "";
 
 var wordsString = "Австралия,автомат,агент,адвокат,Азия,акт,альбом,Альпы,Америка,амфибия,ангел,Англия,Антарктида,аппарат,Атлантида,Африка,ацтек,бабочка,база,Байкал,банк,баня,бар,барьер,бассейн,батарея,башня,берёза,Берлин,Бермуды,билет,биржа,блин,блок,боевик,бокс,болезнь,больница,бомба,боров,борт,ботинок,бочка,брак,бревно,бумага,бутылка,бык,вагон,вал,ведьма,век,венец,вертолёт,верфь,вес,ветер,взгляд,вид,вилка,вирус,вода,водолаз,вождь,воздух,война,волна,вор,время,высота,газ,галоп,гвоздь,гений,Германия,гигант,глаз,Голливуд,голова,горло,горн,гранат,гребень,Греция,гриф,груша,дама,декрет,день,десна,динозавр,диск,доктор,дракон,дробь,дума,дух,дыра,дятел,Европа,Египет,единорог,ёрш,жизнь,жила,жук,журавль,залог,замок,заноза,запад,запах,заяц,звезда,зебра,земля,знак,золото,зона,зуб,игла,игра,икра,Индия,институт,кабинет,кавалер,кадр,казино,камень,камера,канал,караул,карлик,карта,каша,кенгуру,кентавр,кетчуп,киви,кисть,кит,Китай,клетка,ключ,кокетка,кол,колода,колонна,кольцо,команда,конёк,контрабандист,концерт,кора,корабль,королева,король,корона,коса,кость,косяк,кошка,край,кран,крест,кролик,крошка,круг,крыло,кулак,курс,лад,лазер,лама,ласка,лев,лёд,лейка,лес,лимузин,линия,липа,лист,лицо,ложе,Лондон,лошадь,лук,луна,луч,масло,масса,мат,машина,мёд,медведь,Мексика,мелочь,место,механизм,микроскоп,миллионер,мир,морковь,мороженое,Москва,мост,мотив,мушка,мышь,налёт,наряд,небоскрёб,ниндзя,нож,номер,норка,нота,ночь,НьюЙорк,няня,область,облом,образ,образование,обрез,овсянка,огонь,Олимп,опера,операция,орган,орёл,осьминог,отель,падение,палата,палец,палочка,панель,пара,парашют,парк,партия,пассаж,паук,пачка,Пекин,перевод,перемена,перо,перчатка,пилот,пингвин,пирамида,пират,пистолет,плата,платье,площадь,пляж,побег,повар,подкова,подъём,покров,пол,поле,полис,полиция,помёт,порода,посольство,поток,почка,пояс,право,предложение,предприниматель,прибор,привод,призрак,принцесса,пришелец,пробка,проводник,проказа,прокат,проспект,профиль,путь,Пушкин,развод,разворот,рак,раковина,раствор,рейд,Рим,робот,рог,род,рок,рубашка,рукав,рулетка,рыба,рысь,рыцарь,салют,сантехник,Сатурн,свет,свидетель,секрет,секция,сердце,сеть,сила,скат,смерть,снаряд,снег,снеговик,собака,совет,солдат,соль,состав,спутник,среда,ссылка,стадион,стан,станок,ствол,стекло,стена,стойка,стол,стопа,стрела,строй,струна,стул,ступень,судьба,супергерой,такса,танец,тарелка,театр,телескоп,течение,титан,Токио,точка,трава,треугольник,труба,туба,тур,ударник,удел,узел,урал,урна,утка,утконос,учёный,учитель,факел,фаланга,фига,флейта,фокус,форма,Франция,хвост,хлопок,центр,церковь,частица,червь,шар,шоколад,шпагат,шпион,штат,шуба,экран,эльф,эфир,Юпитер,яблоко,яд,язык,якорь,ясли";
 
-function arrayToString(array) {
+function localWriteArray(localKey, array) {
 	var string = "";
 	for (var i = 0; i < array.length; i++) {
 		if (i == 0) {
@@ -14,7 +15,7 @@ function arrayToString(array) {
 			string = string + "," + array[i];
 		}
 	}
-	return string;
+	localStorage.setItem(localKey, string);
 }
 
 function randomInteger(min, max) {
@@ -22,38 +23,47 @@ function randomInteger(min, max) {
   return Math.round(rand);
 }
 
-function addPlayerToList() { //добавляем игроков в списки
-	var player = document.getElementById("player").value;
-	var playerDuplicated = false;
-
-	for (var i = 0; i < playerList.length; i++) { //проверка на повторение имен
-		if (playerList[i] == player) {
-			playerDuplicated = true;
-		} else {
-			playerDuplicated = false;
+function isDuplicated(array, item) {
+	var result = false;
+	for (var i = 0; i < array.length; i++) {
+		if (array[i] == item) {
+			result = true;
 		}
 	}
+	return result;
+}
 
-	if ((playerList.length < 8) && (player != "") && !playerDuplicated) { //если все ок, добавляем имя в список
+function hasComma(string) {
+	var result = false;
+	for (var i = 0; i < string.length; i++) {
+		if (string[i] == ",") {
+			result = true;
+		}
+	}
+	return result;
+}
+
+function localReadArray(localKey) {
+	var array = localStorage.getItem(localKey).split(',');
+	if (array[0] == "") {
+		array.splice(0, 1);
+	}
+	return array;
+}
+
+function addPlayerToList() { //добавляем игроков в список
+	var player = document.getElementById("player").value;
+	var playerList = localReadArray("playerList");
+
+	if ((playerList.length < 8) && (player != "") && !isDuplicated(playerList, player) && !hasComma(player)) { //если все ок, добавляем имя в список
 		playerList.push(player);
 
 		var newPlayer = document.createElement("li");
+		var deleteButton = document.createElement("a");
+
 		newPlayer.innerHTML = player;
 		newPlayer.id = playerList.length;
 
-		/*var deleteButton = document.createElement("input");
-		deleteButton.class = "delete";
-		deleteButton.value = "X";
-		deleteButton.type = "button";
-		deleteButton.id = "del" + playerList.length;
-		deleteButton.onclick = function() {
-			deletedSymbol = +this.parentNode.id - 1;
-			playerList.splice(deletedSymbol, 1);
-			this.parentNode.remove();
-		};*/
-
-
-		var deleteButton = document.createElement("a");
 		deleteButton.href = "#";
 		deleteButton.innerText = "[X]";
 		deleteButton.id = "del" + playerList.length;
@@ -63,24 +73,31 @@ function addPlayerToList() { //добавляем игроков в списки
 			this.parentNode.remove();
 		};
 
+		localWriteArray("playerList", playerList);
+
 		document.getElementById("playerList").append(newPlayer);
 		document.getElementById(playerList.length).appendChild(deleteButton);
-
-
+		document.getElementById("player").value = "";
+		document.getElementById("player").focus()
 
 	} else if (playerList.length >= 8) {
 		alert("Максимум 8 игроков");
+
 	} else if (player == "") {
 		alert("Имя не введено");
-	} else if (playerDuplicated) {
+
+	} else if (isDuplicated(playerList, player)) {
 		alert("Имя не уникально");
+
+	} else if (hasComma(player)) {
+		alert("В имени не должно быть запятых");
 	}
 }
 
 function teamAssign() { //распределяем игроков по командам
-	localStorage.setItem('playerList', arrayToString(playerList));
 	localStorage.setItem('stage', 1);
 
+	var playerList = localReadArray("playerList");
 	var teamA = [];
 	var teamB = [];
 	var playerPool = playerList.slice();
@@ -97,8 +114,8 @@ function teamAssign() { //распределяем игроков по кома�
 			}
 		}
 
-		localStorage.setItem('teamA', arrayToString(teamA));
-		localStorage.setItem('teamB', arrayToString(teamB));
+		localWriteArray("teamA", teamA);
+		localWriteArray("teamB", teamB);
 
 		addPlayerToTeamList(teamA, "teamAList");
 		addPlayerToTeamList(teamB, "teamBList");
@@ -119,6 +136,7 @@ function addPlayerToTeamList(team, id) { //вывод списка команд
 }
 
 function wordsShuffle() { //тасовка слов
+	var playerList = localReadArray("playerList");
 	var wordsArray = wordsString.split(',');
 	var cardCount = playerList.length * 10;
 	var wordsInGame = [];
@@ -127,7 +145,7 @@ function wordsShuffle() { //тасовка слов
 		wordsInGame.push(wordsArray[rand]);
 		wordsArray.splice(rand, 1);
 	}
-	localStorage.setItem('wordsInGame', arrayToString(wordsInGame));
+	localWriteArray("wordsInGame", wordsInGame);
 }
 
 function startGame() { //запуск игры
@@ -154,8 +172,8 @@ function startGame() { //запуск игры
 function preRound () { //вводная перед началом раунда
 	var textString = "";
 	var method = randomInteger(0, 2);
-	var teamA = localStorage.getItem("teamA").split(',');
-	var teamB = localStorage.getItem("teamB").split(',');
+	var teamA = localReadArray("teamA");
+	var teamB = localReadArray("teamB");
 
 	localStorage.setItem("wordsDone", "");
 	localStorage.setItem("wordsSkip", "");
@@ -178,11 +196,11 @@ function preRound () { //вводная перед началом раунда
 }
 
 function startRound() { //запуск раунда
-	var wordsArray = localStorage.getItem('wordsInGame').split(',');
+	var wordsInGame = localReadArray("wordsInGame");
 
 	document.getElementById("method").hidden = true;
 	document.getElementById("round").hidden = false;
-	document.getElementById("word").innerText = wordsArray[0];
+	document.getElementById("word").innerText = wordsInGame[0];
 	document.getElementById("timer").innerText = "60";
 
 	var timer = setTimeout(secondsCount, 1000);
@@ -199,54 +217,46 @@ function secondsCount() { //обратный отсчет
 }
 
 function done() { //если слово угадано
-	var wordsArray = localStorage.getItem('wordsInGame').split(',');
-	var wordsDone = localStorage.getItem('wordsDone').split(',');
+	var wordsInGame = localReadArray("wordsInGame");
+	var wordsDone = localReadArray("wordsDone");
 
-	if (wordsDone[0] == "") {
-		wordsDone.splice(0, 1);
-	}
+	if (wordsInGame.length > 1) {
+		wordsDone.push(wordsInGame[0]);
+		wordsInGame.splice(0, 1);
 
-	if (wordsArray.length > 1) {
-		wordsDone.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
+		localWriteArray("wordsDone", wordsDone);
+		localWriteArray("wordsInGame", wordsInGame);
+		document.getElementById("word").innerText = wordsInGame[0];
 
-		localStorage.setItem("wordsDone", arrayToString(wordsDone));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
-		document.getElementById("word").innerText = wordsArray[0];
+	} else if (wordsInGame.length == 1) {
+		wordsDone.push(wordsInGame[0]);
+		wordsInGame.splice(0, 1);
 
-	} else if (wordsArray.length == 1) {
-		wordsDone.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
-
-		localStorage.setItem("wordsDone", arrayToString(wordsDone));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
+		localWriteArray("wordsDone", wordsDone);
+		localWriteArray("wordsInGame", wordsInGame);
 
 		endRound();
 	}
 }
 
 function skip() { //если слово пропущено
-	var wordsArray = localStorage.getItem('wordsInGame').split(',');
-	var wordsSkip = localStorage.getItem('wordsSkip').split(',');
+	var wordsInGame = localReadArray("wordsInGame");
+	var wordsSkip = localReadArray("wordsSkip");
 
-	if (wordsSkip[0] == "") {
-		wordsSkip.splice(0, 1);
-	}
+	if (wordsInGame.length > 1) {
+		wordsSkip.push(wordsInGame[0]);
+		wordsInGame.splice(0, 1);
 
-	if (wordsArray.length > 1) {
-		wordsSkip.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
+		localWriteArray("wordsSkip", wordsSkip);
+		localWriteArray("wordsInGame", wordsInGame);
+		document.getElementById("word").innerText = wordsInGame[0];
 
-		localStorage.setItem("wordsSkip", arrayToString(wordsSkip));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
-		document.getElementById("word").innerText = wordsArray[0];
+	} else if (wordsInGame.length == 1) {
+		wordsSkip.push(wordsInGame[0]);
+		wordsInGame.splice(0, 1);
 
-	} else if (wordsArray.length == 1) {
-		wordsSkip.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
-
-		localStorage.setItem("wordsSkip", arrayToString(wordsSkip));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
+		localWriteArray("wordsSkip", wordsSkip);
+		localWriteArray("wordsInGame", wordsInGame);
 
 		endRound();
 	}
@@ -254,17 +264,9 @@ function skip() { //если слово пропущено
 
 function endRound () {
 	clearTimeout(timer);
-	var wordsArray = localStorage.getItem('wordsInGame').split(',');
-	var wordsDone = localStorage.getItem("wordsDone").split(",");
-	var wordsSkip = localStorage.getItem("wordsSkip").split(",");
-
-	if (wordsDone[0] == "") {
-		wordsDone.splice(0, 1);
-	}
-
-	if (wordsSkip[0] == "") {
-		wordsSkip.splice(0, 1);
-	}
+	var wordsArray = localReadArray("wordsInGame");
+	var wordsDone = localReadArray("wordsDone");
+	var wordsSkip = localReadArray("wordsSkip")
 
 	document.getElementById("doneList").innerHTML = "";
 	document.getElementById("skipList").innerHTML = "";
@@ -294,7 +296,7 @@ function endRound () {
 		localStorage.setItem("wordsSkip", "");
 		localStorage.setItem("currentTeam", "teamB");
 
-		if (localStorage.getItem("currentPlayerA") == (parseInt(localStorage.getItem("teamA").split(",").length) - 1)) {
+		if (localStorage.getItem("currentPlayerA") == (parseInt(localReadArray("teamA").length) - 1)) {
 			localStorage.setItem("currentPlayerA", "0");
 
 		} else {
@@ -307,7 +309,7 @@ function endRound () {
 		localStorage.setItem("wordsSkip", "");
 		localStorage.setItem("currentTeam", "teamA");
 
-		if (localStorage.getItem("currentPlayerB") == (parseInt(localStorage.getItem("teamB").split(",").length) - 1)) {
+		if (localStorage.getItem("currentPlayerB") == (parseInt(localReadArray("teamB").length) - 1)) {
 			localStorage.setItem("currentPlayerB", "0");
 
 		} else {
