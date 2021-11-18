@@ -8,42 +8,44 @@
 	<body>
 
 		<div id="input"> <!--блок добавления игроков-->
-			<p><input id="player" type="text" maxlength="10" placeholder="Введите имя"></p>
-			<p><input type="button" value="Добавить" onclick="addPlayerToList()"></p>
-			<p><ol id="playerList"></ol></p>
-			<p><input type="button" value="Разбить на команды" onclick="teamAssign()"></p>
+			<div class="text">Для начала добавьте игроков (минимум 4)</div>
+			<div class="input"><input id="player" type="text" maxlength="10" placeholder="Введите имя"></div>
+			<div class="button"><input class="mainbutton" type="button" value="Добавить" onclick="addPlayerToList()"></div>
+			<div class="list"><ol id="playerList"></ol></div>
+			<div class="button"><input class="mainbutton" type="button" value="Далее" onclick="teamAssign()"></div>
 		</div>
 
 		<div id="teams" hidden="true"> <!--блок распределения по командам-->
-			<p>Команда А</p>
-			<p><ol id="teamAList"></ol></p>
-			<p>Команда Б </p>
-			<p><ol id="teamBList"></ol></p>
-			<p><input type="button" value="Начать игру" onclick="startGame()"></p>
+			<div class="text">Команда А</div>
+			<div class="list"><ol id="teamAList"></ol></div>
+			<div class="text">Команда Б </div>
+			<div class="list"><ol id="teamBList"></ol></div>
+			<div class="button"><input class="mainbutton" type="button" value="Начать игру" onclick="startGame()"></div>
 		</div>
 
 		<div id="method" hidden="true"> <!--блок описания раунда-->
-			<p id="gameMethodText"></p>
-			<p><input type="button" value="Старт" onclick="startRound()"></p>
+			<div class="text" id="gameMethodText"></div>
+			<div class="button"><input class="mainbutton" type="button" value="Старт" onclick="startRound()"></div>
 		</div>
 
 		<div id="round" hidden="ture"> <!--блок раунда-->
-			<p id="word"></p>
-			<p id="timer"></p>
-			<p><input type="button" value="Угадано" onclick="done()"><input type="button" value="Пропуск" onclick="skip()"></p>
+			<div class="text" id="word"></div>
+			<div class="text" id="timer"></div>
+			<div class="button"><input type="button" value="Верно!" onclick="done()"></div>
+			<div class="button"><input type="button" value="Пропуск" onclick="skip()"></div>
 		</div>
 
 		<div id="result" hidden="true"> <!--блок результатов раунда-->
-			<p>Угаданные слова</p>
-			<p><ol id="doneList"></ol></p>
-			<p>Пропущенные слова</p>
-			<p><ol id="skipList"></ol></p>
-			<p><input type="button" value="Продолжить" onclick="nextRound()"></p>
+			<div class="text">Угаданные слова</div>
+			<div class="list"><ol id="doneList"></ol></div>
+			<div class="text">Пропущенные слова</div>
+			<div class="list"><ol id="skipList"></ol></div>
+			<div class="button"><input class="mainbutton" type="button" value="Далее" onclick="nextRound()"></div>
 		</div>
 
 		<div id="gameover" hidden="true"> <!--блок результатов игры-->
-			<p id="score"></p>
-			<p><input type="button" value="Новая игра" onclick="newGame()"></p>
+			<div class="text" id="score"></div>
+			<div class="button" ><input class="mainbutton" type="button" value="Новая игра" onclick="newGame()"></div>
 		</div>
 
 		<script src="index.js"></script>

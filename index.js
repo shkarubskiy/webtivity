@@ -1,6 +1,7 @@
 var playerList = [];
-var teamA = [];
-var teamB = [];
+var timer = 0;
+/*var teamA = [];
+var teamB = [];*/
 
 var wordsString = "Австралия,автомат,агент,адвокат,Азия,акт,альбом,Альпы,Америка,амфибия,ангел,Англия,Антарктида,аппарат,Атлантида,Африка,ацтек,бабочка,база,Байкал,банк,баня,бар,барьер,бассейн,батарея,башня,берёза,Берлин,Бермуды,билет,биржа,блин,блок,боевик,бокс,болезнь,больница,бомба,боров,борт,ботинок,бочка,брак,бревно,бумага,бутылка,бык,вагон,вал,ведьма,век,венец,вертолёт,верфь,вес,ветер,взгляд,вид,вилка,вирус,вода,водолаз,вождь,воздух,война,волна,вор,время,высота,газ,галоп,гвоздь,гений,Германия,гигант,глаз,Голливуд,голова,горло,горн,гранат,гребень,Греция,гриф,груша,дама,декрет,день,десна,динозавр,диск,доктор,дракон,дробь,дума,дух,дыра,дятел,Европа,Египет,единорог,ёрш,жизнь,жила,жук,журавль,залог,замок,заноза,запад,запах,заяц,звезда,зебра,земля,знак,золото,зона,зуб,игла,игра,икра,Индия,институт,кабинет,кавалер,кадр,казино,камень,камера,канал,караул,карлик,карта,каша,кенгуру,кентавр,кетчуп,киви,кисть,кит,Китай,клетка,ключ,кокетка,кол,колода,колонна,кольцо,команда,конёк,контрабандист,концерт,кора,корабль,королева,король,корона,коса,кость,косяк,кошка,край,кран,крест,кролик,крошка,круг,крыло,кулак,курс,лад,лазер,лама,ласка,лев,лёд,лейка,лес,лимузин,линия,липа,лист,лицо,ложе,Лондон,лошадь,лук,луна,луч,масло,масса,мат,машина,мёд,медведь,Мексика,мелочь,место,механизм,микроскоп,миллионер,мир,морковь,мороженое,Москва,мост,мотив,мушка,мышь,налёт,наряд,небоскрёб,ниндзя,нож,номер,норка,нота,ночь,НьюЙорк,няня,область,облом,образ,образование,обрез,овсянка,огонь,Олимп,опера,операция,орган,орёл,осьминог,отель,падение,палата,палец,палочка,панель,пара,парашют,парк,партия,пассаж,паук,пачка,Пекин,перевод,перемена,перо,перчатка,пилот,пингвин,пирамида,пират,пистолет,плата,платье,площадь,пляж,побег,повар,подкова,подъём,покров,пол,поле,полис,полиция,помёт,порода,посольство,поток,почка,пояс,право,предложение,предприниматель,прибор,привод,призрак,принцесса,пришелец,пробка,проводник,проказа,прокат,проспект,профиль,путь,Пушкин,развод,разворот,рак,раковина,раствор,рейд,Рим,робот,рог,род,рок,рубашка,рукав,рулетка,рыба,рысь,рыцарь,салют,сантехник,Сатурн,свет,свидетель,секрет,секция,сердце,сеть,сила,скат,смерть,снаряд,снег,снеговик,собака,совет,солдат,соль,состав,спутник,среда,ссылка,стадион,стан,станок,ствол,стекло,стена,стойка,стол,стопа,стрела,строй,струна,стул,ступень,судьба,супергерой,такса,танец,тарелка,театр,телескоп,течение,титан,Токио,точка,трава,треугольник,труба,туба,тур,ударник,удел,узел,урал,урна,утка,утконос,учёный,учитель,факел,фаланга,фига,флейта,фокус,форма,Франция,хвост,хлопок,центр,церковь,частица,червь,шар,шоколад,шпагат,шпион,штат,шуба,экран,эльф,эфир,Юпитер,яблоко,яд,язык,якорь,ясли";
 
@@ -40,9 +41,21 @@ function addPlayerToList() { //добавляем игроков в списки
 		newPlayer.innerHTML = player;
 		newPlayer.id = playerList.length;
 
-		var deleteButton = document.createElement("input");
-		deleteButton.value = "Удалить";
+		/*var deleteButton = document.createElement("input");
+		deleteButton.class = "delete";
+		deleteButton.value = "X";
 		deleteButton.type = "button";
+		deleteButton.id = "del" + playerList.length;
+		deleteButton.onclick = function() {
+			deletedSymbol = +this.parentNode.id - 1;
+			playerList.splice(deletedSymbol, 1);
+			this.parentNode.remove();
+		};*/
+
+
+		var deleteButton = document.createElement("a");
+		deleteButton.href = "#";
+		deleteButton.innerText = "[X]";
 		deleteButton.id = "del" + playerList.length;
 		deleteButton.onclick = function() {
 			deletedSymbol = +this.parentNode.id - 1;
@@ -68,6 +81,8 @@ function teamAssign() { //распределяем игроков по кома�
 	localStorage.setItem('playerList', arrayToString(playerList));
 	localStorage.setItem('stage', 1);
 
+	var teamA = [];
+	var teamB = [];
 	var playerPool = playerList.slice();
 
 	if (playerPool.length > 3) {
@@ -108,7 +123,7 @@ function wordsShuffle() { //тасовка слов
 	var cardCount = playerList.length * 10;
 	var wordsInGame = [];
 	for (var i = 0; i < cardCount; i++) {
-		rand = randomInteger(0, wordsArray.length);
+		rand = randomInteger(0, parseInt(wordsArray.length) - 1);
 		wordsInGame.push(wordsArray[rand]);
 		wordsArray.splice(rand, 1);
 	}
@@ -139,6 +154,8 @@ function startGame() { //запуск игры
 function preRound () { //вводная перед началом раунда
 	var textString = "";
 	var method = randomInteger(0, 2);
+	var teamA = localStorage.getItem("teamA").split(',');
+	var teamB = localStorage.getItem("teamB").split(',');
 
 	localStorage.setItem("wordsDone", "");
 	localStorage.setItem("wordsSkip", "");
@@ -152,9 +169,9 @@ function preRound () { //вводная перед началом раунда
 	}
 
 	if (localStorage.getItem("currentTeam") == "teamA") { //текст для команды А
-		textString = localStorage.getItem("currentPlayerA") + " из команды А " + method;
-	} else { //текст для комнды Б
-		textString = localStorage.getItem("currentPlayerB") + " из команды Б " + method;
+		textString = teamA[parseInt(localStorage.getItem("currentPlayerA"))] + " из команды А " + method;
+	} else if (localStorage.getItem("currentTeam") == "teamB") { //текст для комнды Б
+		textString = teamB[parseInt(localStorage.getItem("currentPlayerB"))] + " из команды Б " + method;
 	}
 
 		document.getElementById("gameMethodText").innerText = textString;
@@ -175,7 +192,7 @@ function startRound() { //запуск раунда
 function secondsCount() { //обратный отсчет
 	document.getElementById("timer").innerText = parseInt(document.getElementById("timer").innerText) - 1;
 	if (document.getElementById("timer").innerText > "0") {
-		var timer = setTimeout(secondsCount, 1000);
+		timer = setTimeout(secondsCount, 1000);
 	} else {
 		endRound();
 	}
@@ -206,17 +223,6 @@ function done() { //если слово угадано
 
 		endRound();
 	}
-	/*while (wordsArray.length > 0) {
-		wordsDone.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
-
-		localStorage.setItem("wordsDone", arrayToString(wordsDone));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
-		document.getElementById("word").innerText = wordsArray[0];
-	}
-	if (wordsArray.length == 0) {
-		endRound();
-	}*/
 }
 
 function skip() { //если слово пропущено
@@ -244,21 +250,10 @@ function skip() { //если слово пропущено
 
 		endRound();
 	}
-	/*while (wordsArray.length > 0) {
-
-		wordsSkip.push(wordsArray[0]);
-		wordsArray.splice(0, 1);
-
-		localStorage.setItem("wordsSkip", arrayToString(wordsSkip));
-		localStorage.setItem("wordsInGame", arrayToString(wordsArray));
-		document.getElementById("word").innerText = wordsArray[0];
-	}
-		if (wordsArray.length == 0) {
-			endRound();
-		}*/
 }
 
 function endRound () {
+	clearTimeout(timer);
 	var wordsArray = localStorage.getItem('wordsInGame').split(',');
 	var wordsDone = localStorage.getItem("wordsDone").split(",");
 	var wordsSkip = localStorage.getItem("wordsSkip").split(",");
@@ -295,6 +290,8 @@ function endRound () {
 
 	if (localStorage.getItem("currentTeam") == "teamA") {
 		localStorage.setItem("resultA", parseInt(localStorage.getItem("resultA")) + parseInt(wordsDone.length) - parseInt(wordsSkip.length));
+		localStorage.setItem("wordsDone", "");
+		localStorage.setItem("wordsSkip", "");
 		localStorage.setItem("currentTeam", "teamB");
 
 		if (localStorage.getItem("currentPlayerA") == (parseInt(localStorage.getItem("teamA").split(",").length) - 1)) {
@@ -306,6 +303,8 @@ function endRound () {
 
 	} else if (localStorage.getItem("currentTeam") == "teamB") {
 		localStorage.setItem("resultB", parseInt(localStorage.getItem("resultB")) + parseInt(wordsDone.length)  - parseInt(wordsSkip.length));
+		localStorage.setItem("wordsDone", "");
+		localStorage.setItem("wordsSkip", "");
 		localStorage.setItem("currentTeam", "teamA");
 
 		if (localStorage.getItem("currentPlayerB") == (parseInt(localStorage.getItem("teamB").split(",").length) - 1)) {
@@ -343,4 +342,12 @@ function gameOver() {
 	}
 
 	document.getElementById("score").innerText = text;
+}
+
+function newGame() {
+	document.getElementById("gameover").hidden = true;
+	document.getElementById("input").hidden = false;
+	document.getElementById("playerList").innerHTML = "";
+	document.getElementById("teamAList").innerHTML = "";
+	document.getElementById("teamBList").innerHTML = "";
 }
