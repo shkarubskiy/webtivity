@@ -57,6 +57,10 @@ input[type="text"] {
   border-color: #28C28E;
 }
 
+input[type="text"]::placeholder {
+  color: #28C28E;
+}
+
 input[type="button"]:active {
   font-size: 400%;
   color: #28C28E;
