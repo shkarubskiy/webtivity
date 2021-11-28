@@ -1,54 +1,10 @@
 var timer = 0;
 var wordsString = "Австралия,автомат,агент,адвокат,Азия,акт,альбом,Альпы,Америка,амфибия,ангел,Англия,Антарктида,аппарат,Атлантида,Африка,ацтек,бабочка,база,Байкал,банк,баня,бар,барьер,бассейн,батарея,башня,берёза,Берлин,Бермуды,билет,биржа,блин,блок,боевик,бокс,болезнь,больница,бомба,боров,борт,ботинок,бочка,брак,бревно,бумага,бутылка,бык,вагон,вал,ведьма,век,венец,вертолёт,верфь,вес,ветер,взгляд,вид,вилка,вирус,вода,водолаз,вождь,воздух,война,волна,вор,время,высота,газ,галоп,гвоздь,гений,Германия,гигант,глаз,Голливуд,голова,горло,горн,гранат,гребень,Греция,гриф,груша,дама,декрет,день,десна,динозавр,диск,доктор,дракон,дробь,дума,дух,дыра,дятел,Европа,Египет,единорог,ёрш,жизнь,жила,жук,журавль,залог,замок,заноза,запад,запах,заяц,звезда,зебра,земля,знак,золото,зона,зуб,игла,игра,икра,Индия,институт,кабинет,кавалер,кадр,казино,камень,камера,канал,караул,карлик,карта,каша,кенгуру,кентавр,кетчуп,киви,кисть,кит,Китай,клетка,ключ,кокетка,кол,колода,колонна,кольцо,команда,конёк,контрабандист,концерт,кора,корабль,королева,король,корона,коса,кость,косяк,кошка,край,кран,крест,кролик,крошка,круг,крыло,кулак,курс,лад,лазер,лама,ласка,лев,лёд,лейка,лес,лимузин,линия,липа,лист,лицо,ложе,Лондон,лошадь,лук,луна,луч,масло,масса,мат,машина,мёд,медведь,Мексика,мелочь,место,механизм,микроскоп,миллионер,мир,морковь,мороженое,Москва,мост,мотив,мушка,мышь,налёт,наряд,небоскрёб,ниндзя,нож,номер,норка,нота,ночь,НьюЙорк,няня,область,облом,образ,образование,обрез,овсянка,огонь,Олимп,опера,операция,орган,орёл,осьминог,отель,падение,палата,палец,палочка,панель,пара,парашют,парк,партия,пассаж,паук,пачка,Пекин,перевод,перемена,перо,перчатка,пилот,пингвин,пирамида,пират,пистолет,плата,платье,площадь,пляж,побег,повар,подкова,подъём,покров,пол,поле,полис,полиция,помёт,порода,посольство,поток,почка,пояс,право,предложение,предприниматель,прибор,привод,призрак,принцесса,пришелец,пробка,проводник,проказа,прокат,проспект,профиль,путь,Пушкин,развод,разворот,рак,раковина,раствор,рейд,Рим,робот,рог,род,рок,рубашка,рукав,рулетка,рыба,рысь,рыцарь,салют,сантехник,Сатурн,свет,свидетель,секрет,секция,сердце,сеть,сила,скат,смерть,снаряд,снег,снеговик,собака,совет,солдат,соль,состав,спутник,среда,ссылка,стадион,стан,станок,ствол,стекло,стена,стойка,стол,стопа,стрела,строй,струна,стул,ступень,судьба,супергерой,такса,танец,тарелка,театр,телескоп,течение,титан,Токио,точка,трава,треугольник,труба,туба,тур,ударник,удел,узел,урал,урна,утка,утконос,учёный,учитель,факел,фаланга,фига,флейта,фокус,форма,Франция,хвост,хлопок,центр,церковь,частица,червь,шар,шоколад,шпагат,шпион,штат,шуба,экран,эльф,эфир,Юпитер,яблоко,яд,язык,якорь,ясли";
 
-/*if (localStorage.getItem("stage") == 0) {*/
 localStorage.setItem("playerList", "");
 localStorage.setItem('stage', 0);
 document.getElementById("player").value = "";
-/*document.getElementById("input").hidden = false;
-document.getElementById("teams").hidden = true;
-document.getElementById("method").hidden = true;
-document.getElementById("round").hidden = true;
-document.getElementById("result").hidden = true;
-document.getElementById("gameover").hidden = true;
 
-} else if ((localStorage.getItem("stage") == 1)) {
-	startGame();
-	document.getElementById("input").hidden = true;
-	document.getElementById("teams").hidden = true;
-	document.getElementById("method").hidden = false;
-	document.getElementById("round").hidden = true;
-	document.getElementById("result").hidden = true;
-	document.getElementById("gameover").hidden = true;
-} else if ((localStorage.getItem("stage") == 2)) {
-	preRound ();
-	document.getElementById("input").hidden = false;
-	document.getElementById("teams").hidden = true;
-	document.getElementById("method").hidden = true;
-	document.getElementById("round").hidden = true;
-	document.getElementById("result").hidden = true;
-	document.getElementById("gameover").hidden = true;
-} else if ((localStorage.getItem("stage") == 3)) {
-	endRound();
-	document.getElementById("input").hidden = false;
-	document.getElementById("teams").hidden = true;
-	document.getElementById("method").hidden = true;
-	document.getElementById("round").hidden = true;
-	document.getElementById("result").hidden = true;
-	document.getElementById("gameover").hidden = true;
-} else if ((localStorage.getItem("stage") == 4)) {
-	gameOver();
-	document.getElementById("input").hidden = false;
-	document.getElementById("teams").hidden = true;
-	document.getElementById("method").hidden = true;
-	document.getElementById("round").hidden = true;
-	document.getElementById("result").hidden = true;
-	document.getElementById("gameover").hidden = true;
-}*/
-
-function reset() {
-	localStorage.setItem('stage', 0);
-}
 /*Утилитарные функции*/
 
 function localWriteArray(localKey, array) {
@@ -106,33 +62,38 @@ function addPlayerToList() {
 		&& (player != "")
 		&& !isDuplicated(playerList, player)
 		&& !hasComma(player)) {
+			playerList.push(player);
 
-		var newPlayer = document.createElement("li");
-		var deleteButton = document.createElement("a");
+			var newPlayer = document.createElement("li");
+			var deleteButton = document.createElement("a");
+			var id = playerList.length - 1;
 
-		playerList.push(player);
-		localWriteArray("playerList", playerList);
+			newPlayer.innerHTML = player;
+			newPlayer.id = id;
 
-		newPlayer.innerHTML = player;
-		newPlayer.id = playerList.length;
+			deleteButton.href = "#";
+			deleteButton.innerText = "[X]";
+			deleteButton.onclick = function() {
+				var id = this.parentNode.id;
+				var playerList = localReadArray("playerList");
+				playerList.splice(id, 1);
+				this.parentNode.remove();
+				localWriteArray("playerList", playerList);
 
-		deleteButton.href = "#";
-		deleteButton.innerText = "[X]";
-		deleteButton.id = "del" + playerList.length;
-		deleteButton.onclick = function() {
-			deletedSymbol = +this.parentNode.id - 1;
-			playerList = localReadArray("playerList");
-			playerList.splice(deletedSymbol, 1);
+
+				if (id < playerList.length) {
+					for (var i = parseInt(id) + 1; i <= playerList.length; i++) {
+						document.getElementById(i).id = parseInt(document.getElementById(i).id) - 1;
+					}
+				}
+			}
+
+			document.getElementById("playerList").append(newPlayer);
+			document.getElementById(id).appendChild(deleteButton);
+			document.getElementById("player").value = "";
+			document.getElementById("player").focus();
+
 			localWriteArray("playerList", playerList);
-			this.parentNode.remove();
-		}
-
-
-
-		document.getElementById("playerList").append(newPlayer);
-		document.getElementById(playerList.length).appendChild(deleteButton);
-		document.getElementById("player").value = "";
-		document.getElementById("player").focus();
 
 	} else if (playerList.length >= 8) {
 		alert("Максимум 8 игроков");
@@ -191,7 +152,6 @@ function teamAssign() {
 
 
 }
-
 
 function wordsShuffle() {
 	var playerList = localReadArray("playerList");
