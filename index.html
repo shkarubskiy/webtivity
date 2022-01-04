@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+		<head>
+			<meta charset="utf-8" name="viewport" content="width=device-width, user-scalable=no">
+			<link rel="stylesheet" href="style.css">
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+			<title>Webtivity</title>
+			<script src="words.js"></script>
+			<script src="script.js"></script>
+	</head>
+	<body>
+
+	<div class="workspace">
+		<div class="content">
+			<div class="flexcol">
+				<div id="input">
+					<div class="flexrow">
+						<p>Добавьте игроков</p>
+					</div>
+					<div class="flexrow">
+						<input id="player" type="text" value="" maxlength="10" placeholder="Введите имя">
+						<button id="addButton" onclick="addPlayerToList()">Добавить</button>
+					</div>
+					<div class="flexrow">
+						<ol id="playerList" class="list"></ol>
+					</div>
+					<div class="flexrow">
+						<button id="nextButton" onclick="teamAssign()" hidden="true">Далее</button>
+					</div>
+				</div>
+
+				<div id="teams" hidden="true">
+					<div class="flexrow">
+						<p>Команда A</p>
+					</div>
+					<div class="flexrow">
+						<ol id="teamAList" class="list"></ol>
+					</div>
+					<div class="flexrow">
+						<p>Команда Б</p>
+					</div>
+					<div class="flexrow">
+						<ol id="teamBList" class="list"></ol>
+					</div>
+					<div class="flexrow">
+						<button onclick="startGame()">Далее</button>
+					</div>
+				</div>
+
+				<div id="method" hidden="true">
+					<div class="flexrow">
+						<p id="gameMethodText"></p>
+					</div>
+					<div class="flexrow">
+						<button onclick="startRound()">Начать</button>
+					</div>
+				</div>
+
+				<div id="round" hidden="true">
+					<div class="flexrow">
+						<p class="word" id="word"></p>
+					</div>
+					<div class="flexrow">
+						<p class="timer" id="timer"></p>
+					</div>
+					<div class="flexrow">
+						<button class="done" onclick="done()">Верно</button>
+						<button class ="skip" onclick="skip()">Пропуск</button>
+					</div>
+				</div>
+
+				<div id="result" hidden="true">
+					<div class="flexrow">
+						<p id="doneWords" hidden="true">Угаданные слова</p>
+					</div>
+					<div class="flexrow">
+						<ol id="doneList" class="list"></ol>
+					</div>
+					<div class="flexrow">
+						<p id="skipWords" hidden="true">Пропущеные слова</p>
+					</div>
+					<div class="flexrow">
+						<ol id="skipList" class="list"></ol>
+					</div>
+					<div class="flexrow">
+						<button onclick="nextRound()">Далее</button>
+					</div>
+				</div>
+
+				<div id="gameover" hidden="true">
+					<div class="flexrow">
+						<p id="score"></p>
+					</div>
+					<div class="flexrow">
+						<button onclick="newGame()">Новая игра</button>
+					</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	</body>
+</html>
