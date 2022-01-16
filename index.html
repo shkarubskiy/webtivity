@@ -12,93 +12,86 @@
 	</head>
 	<body>
 
-	<div class="workspace">
 		<div class="content">
-			<div class="flexcol">
-				<div id="input">
-					<div class="flexrow">
-						<p>Добавьте игроков</p>
-					</div>
-					<div class="flexrow">
-						<input id="player" type="text" value="" maxlength="10" placeholder="Введите имя">
-						<button id="addButton" onclick="addPlayerToList()">Добавить</button>
-					</div>
-					<div class="flexrow">
-						<ol id="playerList" class="list"></ol>
-					</div>
-					<div class="flexrow">
-						<button id="nextButton" onclick="teamAssign()" hidden="true">Далее</button>
+			<div class="flexcol main">
+
+				<div id="input" class="screen">
+					<div class="flexcol">
+						<h2>Подготовка к игре</h2>
+						<div class="flexcol block">
+							<p>Добавьте<br>от 4 до 8 игроков</p>
+							<input id="player" type="text" value="" maxlength="9" placeholder="Введите имя">
+							<button id="addButton" onclick="addPlayerToList()">Добавить</button>
+							<ol id="playerList" class="list"></ol>
+							<button id="nextButton" onclick="teamAssign()" hidden="true">Продолжить</button>
+						</div>
 					</div>
 				</div>
 
-				<div id="teams" hidden="true">
-					<div class="flexrow">
-						<p>Команда A</p>
-					</div>
-					<div class="flexrow">
-						<ol id="teamAList" class="list"></ol>
-					</div>
-					<div class="flexrow">
-						<p>Команда Б</p>
-					</div>
-					<div class="flexrow">
-						<ol id="teamBList" class="list"></ol>
-					</div>
-					<div class="flexrow">
-						<button onclick="startGame()">Далее</button>
+				<div id="teams" class="screen" hidden="true">
+					<div class="flexcol">
+						<h2>Состав команд</h2>
+						<div class="flexcol block">
+							<p class="header a">Красивые</p>
+							<ol id="teamAList" class="list"></ol>
+							<p class="header b">Умные</p>
+							<ol id="teamBList" class="list"></ol>
+							<button onclick="startGame()">Продолжить</button>
+						</div>
 					</div>
 				</div>
 
-				<div id="method" hidden="true">
-					<div class="flexrow">
-						<p id="gameMethodText"></p>
-					</div>
-					<div class="flexrow">
-						<button onclick="startRound()">Начать</button>
-					</div>
-				</div>
-
-				<div id="round" hidden="true">
-					<div class="flexrow">
-						<p class="word" id="word"></p>
-					</div>
-					<div class="flexrow">
-						<p class="timer" id="timer"></p>
-					</div>
-					<div class="flexrow">
-						<button class="done" onclick="done()">Верно</button>
-						<button class ="skip" onclick="skip()">Пропуск</button>
+				<div id="method" class="screen" hidden="true">
+					<div class="flexcol">
+						<h2>Начало раунда</h2>
+						<div class="flexcol block">
+							<p id="currentPlayer" class="header">Игрок</p>
+							<p class="text">из команды</P>
+							<p id="currentTeam" class="header">Красивые</p>
+							<p class="text" id="gameMethodText"></p>
+							<button onclick="startRound()">Начать</button>
+						</div>
 					</div>
 				</div>
 
-				<div id="result" hidden="true">
-					<div class="flexrow">
-						<p id="doneWords" hidden="true">Угаданные слова</p>
-					</div>
-					<div class="flexrow">
-						<ol id="doneList" class="list"></ol>
-					</div>
-					<div class="flexrow">
-						<p id="skipWords" hidden="true">Пропущеные слова</p>
-					</div>
-					<div class="flexrow">
-						<ol id="skipList" class="list"></ol>
-					</div>
-					<div class="flexrow">
-						<button onclick="nextRound()">Далее</button>
+				<div id="round" class="screen" hidden="true">
+					<div class="flexcol">
+						<h2 class="timer" id="timer">Таймер</h2>
+						<div class="flexcol block">
+							<p class="word" id="word">предприниматель</p>
+							<div class="flexrow">
+								<button class="control done" onclick="done()">Верно</button>
+								<button class ="control skip" onclick="skip()">Пропуск</button>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<div id="gameover" hidden="true">
-					<div class="flexrow">
-						<p id="score"></p>
+				<div id="result" class="screen" hidden="true">
+					<div class="flexcol">
+						<h2>Итог раунда</h2>
+						<div class="flexcol block">
+							<p id="doneWords" class="header done" hidden="true">Угаданные слова</p>
+							<ol id="doneList" class="list"></ol>
+							<p id="skipWords" class="header skip" hidden="true">Пропущеные слова</p>
+							<ol id="skipList" class="list"></ol>
+							<button onclick="nextRound()">Продолжить</button>
+						</div>
 					</div>
-					<div class="flexrow">
-						<button onclick="newGame()">Новая игра</button>
+				</div>
+
+				<div id="gameover" class="screen" hidden="true">
+					<div class="flexcol">
+						<h2>Итог игры</h2>
+						<div class="flexcol block">
+							<p id="score"></p>
+							<p id="winner" class="header">Красивые</p>
+							<button onclick="newGame()">Новая игра</button>
+						</div>
 					</div>
+				</div>
+
 			</div>
-		</div>
-		</div>
 	</div>
 	</body>
 </html>
