@@ -225,12 +225,23 @@ function preRound () { //вводная перед началом раунда
 	}
 
 	if (localStorage.getItem("currentTeam") == "teamA") { //текст для команды А
-		textString = teamA[parseInt(localStorage.getItem("currentPlayerA"))] + " из команды А " + method;
+		document.getElementById("currentPlayer").innerText = teamA[parseInt(localStorage.getItem("currentPlayerA"))];
+		document.getElementById("currentTeam").innerText = "Красивые";
+		document.getElementById("gameMethodText").innerText = method;
+
+		document.getElementById("currentPlayer").style.background = "#FFD6DD";
+		document.getElementById("currentTeam").style.background = "#FFD6DD";
+
 	} else if (localStorage.getItem("currentTeam") == "teamB") { //текст для комнды Б
-		textString = teamB[parseInt(localStorage.getItem("currentPlayerB"))] + " из команды Б " + method;
+		document.getElementById("currentPlayer").innerText = teamA[parseInt(localStorage.getItem("currentPlayerA"))];
+		document.getElementById("currentTeam").innerText = "Умные";
+		document.getElementById("gameMethodText").innerText = method;
+
+		document.getElementById("currentPlayer").style.background = "#C4D0FB";
+		document.getElementById("currentTeam").style.background = "#C4D0FB";
 	}
 
-		document.getElementById("gameMethodText").innerText = textString;
+
 }
 
 function startRound() { //запуск раунда
@@ -385,16 +396,22 @@ function nextRound() {
 function gameOver() {
 	var text = "";
 	if (parseInt(localStorage.getItem("resultA")) > parseInt(localStorage.getItem("resultB"))) {
-		text = "Со счетом " + localStorage.getItem("resultA") + ":" + localStorage.getItem("resultB") + " побеждает команда А";
+		text = "Со счетом " + localStorage.getItem("resultA") + ":" + localStorage.getItem("resultB") + "<br>побеждает команда";
+		document.getElementById("score").innerHTML = text;
+		document.getElementById("winner").innerText = "Красивые";
+		document.getElementById("winner").style.background = "#FFD6DD";
 
 	} else if (parseInt(localStorage.getItem("resultA")) < parseInt(localStorage.getItem("resultB"))) {
-		text = "Со счетом " + localStorage.getItem("resultB") + ":" + localStorage.getItem("resultA") + " побеждает команда Б";
-
+		text = "Со счетом " + localStorage.getItem("resultB") + ":" + localStorage.getItem("resultA") + "<br>побеждает команда";
+		document.getElementById("score").innerHTML = text;
+		document.getElementById("winner").innerText = "Умные";
+		document.getElementById("winner").style.background = "#C4D0FB";
 	} else if (parseInt(localStorage.getItem("resultA")) == parseInt(localStorage.getItem("resultB"))) {
 		text = "Ничья со счетом " + localStorage.getItem("resultA") + ":" + localStorage.getItem("resultB");
+		document.getElementById("winner").hidden = true;
 	}
 
-	document.getElementById("score").innerText = text;
+
 
 }
 
