@@ -1,107 +1,92 @@
 <!DOCTYPE html>
 <html lang="ru">
-		<head>
-			<meta charset="utf-8" name="viewport" content="width=device-width, user-scalable=no">
-			<link rel="stylesheet" href="style.css">
-			<link rel="preconnect" href="https://fonts.googleapis.com">
-			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-			<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-			<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-			<title>Webtivity</title>
-			<script src="words.js"></script>
-			<script src="script.js"></script>
-			<!-- Global site tag (gtag.js) - Google Analytics -->
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-NEQDQ619Y1"></script>
-			<script>
- 				window.dataLayer = window.dataLayer || [];
-				function gtag(){dataLayer.push(arguments);}
-				gtag('js', new Date());
-
-				gtag('config', 'G-NEQDQ619Y1');
-			</script>
-	</head>
-	<body>
-
-		<div class="content">
-			<div class="flexcol main">
-
-				<div id="input" class="screen">
-					<div class="flexcol">
-						<h2>Подготовка к игре</h2>
-						<div class="flexcol block">
-							<p>Добавьте<br>от 4 до 8 игроков</p>
-							<input id="player" type="text" value="" maxlength="9" placeholder="Введите имя">
-							<button id="addButton" onclick="addPlayerToList()">Добавить</button>
-							<ol id="playerList" class="list"></ol>
-							<button id="nextButton" onclick="teamAssign()" hidden="true">Продолжить</button>
-						</div>
-					</div>
-				</div>
-
-				<div id="teams" class="screen" hidden="true">
-					<div class="flexcol">
-						<h2>Состав команд</h2>
-						<div class="flexcol block">
-							<p class="header a">Красивые</p>
-							<ol id="teamAList" class="list"></ol>
-							<p class="header b">Умные</p>
-							<ol id="teamBList" class="list"></ol>
-							<button onclick="startGame()">Продолжить</button>
-						</div>
-					</div>
-				</div>
-
-				<div id="method" class="screen" hidden="true">
-					<div class="flexcol">
-						<h2>Начало раунда</h2>
-						<div class="flexcol block">
-							<p id="currentPlayer" class="header">Игрок</p>
-							<p class="text">из команды</P>
-							<p id="currentTeam" class="header">Красивые</p>
-							<p class="text" id="gameMethodText"></p>
-							<button onclick="startRound()">Начать</button>
-						</div>
-					</div>
-				</div>
-
-				<div id="round" class="screen" hidden="true">
-					<div class="flexcol">
-						<h2 class="timer" id="timer">Таймер</h2>
-						<div class="flexcol block">
-							<p class="word" id="word">предприниматель</p>
-							<div class="flexrow">
-								<button class="control done" onclick="done()">Верно</button>
-								<button class ="control skip" onclick="skip()">Пропуск</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div id="result" class="screen" hidden="true">
-					<div class="flexcol">
-						<h2>Итог раунда</h2>
-						<div class="flexcol block">
-							<p id="doneWords" class="header done" hidden="true">Угаданные слова</p>
-							<ol id="doneList" class="list"></ol>
-							<p id="skipWords" class="header skip" hidden="true">Пропущеные слова</p>
-							<ol id="skipList" class="list"></ol>
-							<button onclick="nextRound()">Продолжить</button>
-						</div>
-					</div>
-				</div>
-
-				<div id="gameover" class="screen" hidden="true">
-					<div class="flexcol">
-						<h2>Итог игры</h2>
-						<div class="flexcol block">
-							<p id="score"></p>
-							<p id="winner" class="header">Красивые</p>
-							<button onclick="newGame()">Новая игра</button>
-						</div>
-					</div>
-				</div>
-
-			</div>
-	</div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Webtivity</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div class="wrapper" id="app">
+      <header class="header">
+        <h1>Webtivity</h1>
+      </header>
+      <main class="main">
+        <section class="players" v-show="screens.players">
+          <p class="players__text text">
+            Добавьте игроков<br />(минимум 4). <br />Имена игроков должны
+            состоять из букв и цифр<br />и не должны повторяться
+          </p>
+          <input
+            class="players__input input"
+            ref="input"
+            v-model="input"
+            type="text"
+            list="playersNames"
+            placeholder=""
+            maxlength="18"
+          />
+          <datalist>
+            <option v-for="player in recentPlayers" :value="player"></option>
+          </datalist>
+          <p class="players__text-red text" v-show="error.show">
+            {{ error.desc }}
+          </p>
+          <button class="players__button button" @click="addPlayerToList">
+            Добавить
+          </button>
+          <ol class="players__list list" v-show="playersList">
+            <li v-for="(player, index) in game.players">
+              {{ player }}
+              <a href="#" @click="deletePlayerFromList(index)">X</a>
+            </li>
+          </ol>
+          <button
+            class="players__button button"
+            v-show="playersButtonAssign"
+            @click="assignTeams(game.players)"
+          >
+            Назначить команды
+          </button>
+          <details class="players__spoiler spoiler">
+            <summary class="spoiler__summary">Дополнительно</summary>
+            <button class="spoiler__button button" @click="restoreLocalData">
+              Восстановить
+            </button>
+            <button class="spoiler__button-red button" @click="clearLocalData">
+              Очистить память
+            </button>
+          </details>
+        </section>
+        <section class="teams" v-show="screens.teams">
+          <p class="teams__text-big text">Первая команда</p>
+          <ol class="teams__list list">
+            <li v-for="player in game.teams[0].members">{{ player }}</li>
+          </ol>
+          <p class="teams__text-big text">Вторая команда</p>
+          <ol class="teams__list list">
+            <li v-for="player in game.teams[1].members">{{ player }}</li>
+          </ol>
+          <button class="teams__button button" @click="startGame">Старт</button>
+        </section>
+        <section class="preround" v-show="screens.preround">
+          <p class="preround__text text">
+            <span class="text__box">{{ roundData.player }}</span> из
+            <span class="text__box">{{ roundData.team }}</span> объясняет
+            <span class="text__box">{{ roundData.method }}</span>
+          </p>
+        </section>
+      </main>
+    </div>
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
