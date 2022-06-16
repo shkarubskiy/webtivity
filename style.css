@@ -54,6 +54,12 @@ body {
   color: black;
 }
 
+.text-accent {
+  padding: 4px 8px;
+  border-radius: 8px;
+  background-color: #c4d0fb;
+}
+
 .input {
   width: 100%;
   background-color: #efeefc;
@@ -160,4 +166,19 @@ body {
   border-bottom: solid 2px;
   border-color: #bfd2f2;
   font-size: 32px;
+}
+
+/* PREROUND =================================== */
+
+.preround__text {
+  padding: 16px 0 32px;
+  line-height: 1.5;
+}
+
+.preround > * {
+  margin-bottom: 16px;
+}
+
+.preround > *:last-child {
+  margin-bottom: 0;
 }
