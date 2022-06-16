@@ -1,56 +1,76 @@
 const app = Vue.createApp({
   data() {
     return {
-      // game data
-      game: {
-        teams: [
-          {
-            members: [],
-            currentPlayer: 0,
-          },
-          {
-            members: [],
-            currentPlayer: 0,
-          },
-        ],
-        players: [],
-        words: [],
-        roundData: {
-          team: "",
-          player: "",
-          method: "",
+      teams: [
+        {
+          members: [],
+          currentPlayer: 0,
+          name: "Первая команда",
         },
-      },
-      // screens for visibility control
+        {
+          members: [],
+          currentPlayer: 0,
+          name: "Вторая команда",
+        },
+      ], // данные команд
+      players: [], // данные всех игроков
+      words: [], // слова для игры
+      gameMethods: [
+        "объясняет словами",
+        "объясняет жестами",
+        "объясняет рисунками",
+      ], // возможные варианты объяснения слов
+      round: {
+        team: 0,
+        player: 0,
+        method: 0,
+      }, // данные текущего раунда
       screens: {
         players: true,
         teams: false,
         preround: false,
-      },
+      }, // данные отображения экранов
+
+      //===============================
       input: "",
       error: {
         desc: "",
         show: false,
       },
-      coin: 0,
+      //coin: 0,
+      //===============================
     };
   },
   computed: {
-    // recent players for datalist
     recentPlayers() {
       return this.loadLocalArray("recentPlayers").sort();
-    },
+    }, // recent players for datalist
 
-    // elements for visibility control
     playersList() {
-      return this.game.players.length > 0 ? true : false;
-    },
+      return this.players.length > 0 ? true : false;
+    }, // elements for visibility control
 
     playersButtonAssign() {
-      return this.game.players.length > 3 ? true : false;
-    },
+      return this.players.length > 3 ? true : false;
+    }, // elements for visibility control
+
+    spoilerButtonAssign() {
+      if (
+        localStorage.getItem("firstTeam") != null &&
+        localStorage.getItem("secondTeam") != null
+      )
+        return true;
+      return false;
+    }, // elements for visibility control
   },
   methods: {
+    //общие методы
+    getRandomInt(min, max) {
+      let rand = min - 0.5 + Math.random() * (max - min + 1);
+      return Math.round(rand);
+    },
+
+    //для формирования команд
     loadLocalArray(key) {
       if (localStorage.getItem(key) != null)
         return localStorage.getItem(key).split(",");
@@ -61,15 +81,10 @@ const app = Vue.createApp({
       localStorage.setItem(key, array.toString());
     },
 
-    getRandomInt(min, max) {
-      let rand = min - 0.5 + Math.random() * (max - min + 1);
-      return Math.round(rand);
-    },
-
     addPlayerToList() {
       if (this.validateInput(this.input).result) {
         this.error.show = false;
-        this.game.players.push(this.input);
+        this.players.push(this.input);
         this.input = "";
         this.$refs.input.focus();
       } else {
@@ -79,11 +94,11 @@ const app = Vue.createApp({
     },
 
     deletePlayerFromList(index) {
-      this.game.players.splice(index, 1);
+      this.players.splice(index, 1);
     },
 
     validateInput(string) {
-      if (this.game.players.includes(string))
+      if (this.players.includes(string))
         return { result: false, desc: "Имя не должно повторяться" };
       if (string == "")
         return { result: false, desc: "Имя не может быть пустым" };
@@ -108,13 +123,13 @@ const app = Vue.createApp({
         this.error.show = false;
         while (buffer.length > 0) {
           let rnd = this.getRandomInt(0, buffer.length - 1);
-          this.game.teams[0].members.length <= this.game.teams[1].members.length
-            ? this.game.teams[0].members.push(buffer[rnd])
-            : this.game.teams[1].members.push(buffer[rnd]);
+          this.teams[0].members.length <= this.teams[1].members.length
+            ? this.teams[0].members.push(buffer[rnd])
+            : this.teams[1].members.push(buffer[rnd]);
           buffer.splice(rnd, 1);
         }
-        this.saveLocalArray("firstTeam", this.game.teams[0].members);
-        this.saveLocalArray("secondTeam", this.game.teams[1].members);
+        this.saveLocalArray("firstTeam", this.teams[0].members);
+        this.saveLocalArray("secondTeam", this.teams[1].members);
         this.saveLocalArray("recentPlayers", this.getRecentPlayers());
         this.screens.players = false;
         this.screens.teams = true;
@@ -129,28 +144,27 @@ const app = Vue.createApp({
     },
 
     restoreLocalData() {
-      this.game.teams[0].members = this.loadLocalArray("firstTeam");
-      this.game.teams[1].members = this.loadLocalArray("secondTeam");
-      this.game.players = this.game.teams[0].members.concat(
-        this.game.teams[1].members
-      );
+      this.teams[0].members = this.loadLocalArray("firstTeam");
+      this.teams[1].members = this.loadLocalArray("secondTeam");
+      this.players = this.teams[0].members.concat(this.teams[1].members);
       this.screens.players = false;
       this.screens.teams = true;
     },
 
     getRecentPlayers() {
       let recentPlayers = this.loadLocalArray("recentPlayers");
-      for (let i = 0; i < this.game.players.length; i++) {
-        if (!recentPlayers.includes(this.game.players[i]))
-          recentPlayers.push(this.game.players[i]);
+      for (let i = 0; i < this.players.length; i++) {
+        if (!recentPlayers.includes(this.players[i]))
+          recentPlayers.push(this.players[i]);
       }
       return recentPlayers;
     },
 
+    //для организации игры
     fetchRandomWords(source, count) {
       let buffer = source.slice();
       let result = [];
-      for (let i = 0; i < count * this.game.players.length; i++) {
+      for (let i = 0; i < count * this.players.length; i++) {
         rnd = this.getRandomInt(0, parseInt(buffer.length) - 1);
         result.push(buffer[rnd]);
         buffer.splice(rnd, 1);
@@ -158,20 +172,27 @@ const app = Vue.createApp({
       return result;
     },
 
-    startGame() {
-      this.words = this.fetchRandomWords(wordsPool.basic, 10);
-      this.setTurnOrder() == 1
-        ? (this.game.roundData.team = "первой команды")
-        : (this.game.roundData.team = "второй команды");
-    },
-
     setTurnOrder() {
       return this.getRandomInt(0, 1);
+    },
+
+    //для этапов игры
+    startGame() {
+      this.words = this.fetchRandomWords(wordsPool.basic, 10);
+      this.setTurnOrder() == 1 ? (this.round.team = 0) : (this.round.team = 1);
+      this.startPreround();
     },
 
     startPreround() {
       this.screens.teams = false;
       this.screens.preround = true;
+      this.round.player =
+        this.teams[this.round.team].members[
+          this.teams[this.round.team].currentPlayer
+        ];
+      this.round.method =
+        this.gameMethods[this.getRandomInt(0, this.gameMethods.length - 1)];
+      console.log(this.round);
     },
   },
 });
