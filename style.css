@@ -182,3 +182,36 @@ body {
 .preround > *:last-child {
   margin-bottom: 0;
 }
+
+/* ROUND ================================= */
+
+.round__word {
+  margin: 32px 0;
+  font-size: 30px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0px;
+}
+
+.round__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.round__timer {
+  margin-bottom: 16px;
+}
+
+.round__button-red {
+  width: calc((100% - 16px) / 2);
+  padding: 32px;
+  color: #000000;
+  background-color: #ff6681;
+}
+
+.round__button-green {
+  padding: 32px;
+  width: calc((100% - 16px) / 2);
+  color: #000000;
+  background-color: #5bd7bc;
+}
