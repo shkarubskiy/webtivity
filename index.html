@@ -20,7 +20,7 @@
         <h1>Webtivity</h1>
       </header>
       <main class="main">
-        <section class="players hidden" v-show="screens.players">
+        <section class="players" v-show="screens.players">
           <p class="players__text text">
             Добавьте игроков<br />(минимум 4). <br />Имена игроков должны
             состоять из букв и цифр<br />и не должны повторяться
@@ -87,11 +87,15 @@
             teams[round.team].name }}"<br />
             <span class="text-accent">{{ round.method }}</span>.
           </p>
-          <button class="preround__button button">Начать</button>
+          <button class="preround__button button" @click="startRound">
+            Начать
+          </button>
         </section>
-        <section class="round">
-          <p class="round__word">предприниматель</p>
-          <p class="round__timer">00:00</p>
+        <section class="round" v-show="screens.round">
+          <p class="round__word">{{ round.word }}</p>
+          <div class="round__timer timer">
+            <div class="timer__line" :style="{ width:timerLineWidth }"></div>
+          </div>
           <div class="round__container">
             <button class="round__button-red button">Пропуск</button>
             <button class="round__button-green button">Верно</button>

@@ -200,6 +200,16 @@ body {
 
 .round__timer {
   margin-bottom: 16px;
+  height: 32px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #efeefc;
+}
+
+.timer__line {
+  background-color: #6a5ae0;
+  height: 32px;
+  width: 50%;
 }
 
 .round__button-red {

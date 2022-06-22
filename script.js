@@ -24,11 +24,14 @@ const app = Vue.createApp({
         team: 0,
         player: 0,
         method: 0,
+        word: "",
+        timer: 50,
       }, // данные текущего раунда
       screens: {
         players: true,
         teams: false,
         preround: false,
+        round: false,
       }, // данные отображения экранов
 
       //===============================
@@ -62,6 +65,10 @@ const app = Vue.createApp({
         return true;
       return false;
     }, // elements for visibility control
+
+    timerLineWidth() {
+      return `${2 * this.round.timer}%`;
+    },
   },
   methods: {
     //общие методы
@@ -192,17 +199,38 @@ const app = Vue.createApp({
         ];
       this.round.method =
         this.gameMethods[this.getRandomInt(0, this.gameMethods.length - 1)];
-      console.log(this.round);
+      console.log(this.words);
+    },
+
+    countTimer() {
+      if (this.round.timer > 0) {
+        setTimeout(() => {
+          this.round.timer--;
+          this.countTimer();
+        }, 1000);
+      } else this.endRound();
+    },
+
+    startRound() {
+      this.round.word = this.words[0];
+      this.screens.preround = false;
+      this.screens.round = true;
+      this.round.timer = 50;
+      this.countTimer();
+    },
+
+    endRound() {
+      console.log("end");
     },
   },
 });
 app.mount("#app");
 
-window.onbeforeunload = function () {
-  return true;
-};
+// window.onbeforeunload = function () {
+//   return true;
+// };
 
-let timer = 0;
+//let timer = 0;
 
 /* 
 
