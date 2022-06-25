@@ -25,16 +25,20 @@ const app = Vue.createApp({
         player: 0,
         method: 0,
         word: "",
+        failWords: [],
         timer: 50,
         pass: [],
         fail: [],
       }, // данные текущего раунда
+      score: [0, 0],
+      winner: null,
       screens: {
         players: true,
         teams: false,
         preround: false,
         round: false,
         endround: false,
+        gameover: false,
       }, // данные отображения экранов
       error: {
         desc: "",
@@ -68,6 +72,12 @@ const app = Vue.createApp({
     timerLineWidth() {
       return `${2 * this.round.timer}%`;
     }, // визуализация таймера
+
+    gameScore() {
+      if (this.score[0] > this.score[1])
+        return `${this.score[0]} - ${this.score[1]}`;
+      else return `${this.score[1]} - ${this.score[0]}`;
+    },
   },
   methods: {
     //общие методы
@@ -249,7 +259,7 @@ const app = Vue.createApp({
     },
     pressFail() {
       this.round.fail.push(this.round.word);
-      this.words.push(this.round.word);
+      this.round.failWords.push(this.round.word);
       this.words.shift();
       if (this.round.fail.length == 3) {
         clearTimeout(this.timer);
@@ -261,6 +271,12 @@ const app = Vue.createApp({
     },
 
     endRound() {
+      this.words.concat(this.round.failWords);
+      this.round.failWords = [];
+      this.score[this.round.team] =
+        this.score[this.round.team] +
+        this.round.pass.length -
+        this.round.fail.length;
       if (
         this.teams[this.round.team].currentPlayer <
         this.teams[this.round.team].members.length - 1
@@ -272,7 +288,6 @@ const app = Vue.createApp({
       else if (this.round.team == 1) this.round.team = 0;
       this.screens.round = false;
       this.screens.endround = true;
-      console.log(this.round.team);
     },
 
     nextRound() {
@@ -280,7 +295,12 @@ const app = Vue.createApp({
       else this.gameOver();
     },
 
-    gameOver() {},
+    gameOver() {
+      this.screens.endround = false;
+      this.screens.gameover = true;
+      if (this.score[0] > this.score[1]) this.winner = this.teams[0].name;
+      else this.winner = this.teams[0].name;
+    },
   },
 });
 app.mount("#app");

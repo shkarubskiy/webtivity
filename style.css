@@ -249,3 +249,18 @@ body {
 .endround__list-red {
   color: #ff6681;
 }
+
+/* GAMEOVER ==================================== */
+.gameover > * {
+  margin-bottom: 16px;
+}
+
+.gameover > *:last-child {
+  margin-bottom: 0;
+}
+
+.gameover__text-big {
+  border-bottom: solid 2px;
+  border-color: #bfd2f2;
+  font-size: 32px;
+}

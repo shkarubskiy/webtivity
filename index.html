@@ -117,6 +117,12 @@
             Продолжить
           </button>
         </section>
+        <section class="gameover" v-show="screens.gameover">
+          <p class="gameover__text-big text">Итоги игры</p>
+          <p class="gameover__text text">Побеждает {{ winner }}</p>
+          <p class="gameover__text text">со счетом</p>
+          <p class="gameover__text text">{{ gameScore }}</p>
+        </section>
       </main>
     </div>
     <script src="words.js"></script>
