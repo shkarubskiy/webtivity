@@ -26,6 +26,8 @@ const app = Vue.createApp({
         method: 0,
         word: "",
         timer: 50,
+        pass: [],
+        fail: [],
       }, // данные текущего раунда
       screens: {
         players: true,
@@ -33,29 +35,24 @@ const app = Vue.createApp({
         preround: false,
         round: false,
       }, // данные отображения экранов
-
-      //===============================
-      input: "",
       error: {
         desc: "",
         show: false,
-      },
-      //coin: 0,
-      //===============================
+      }, //отображение ошибок
     };
   },
   computed: {
     recentPlayers() {
       return this.loadLocalArray("recentPlayers").sort();
-    }, // recent players for datalist
+    }, //выгрузка списка игроков
 
     playersList() {
       return this.players.length > 0 ? true : false;
-    }, // elements for visibility control
+    }, //управление видимостью
 
     playersButtonAssign() {
       return this.players.length > 3 ? true : false;
-    }, // elements for visibility control
+    }, //управление видимостью
 
     spoilerButtonAssign() {
       if (
@@ -64,18 +61,18 @@ const app = Vue.createApp({
       )
         return true;
       return false;
-    }, // elements for visibility control
+    }, //управление видимостью
 
     timerLineWidth() {
       return `${2 * this.round.timer}%`;
-    },
+    }, // визуализация таймера
   },
   methods: {
     //общие методы
-    getRandomInt(min, max) {
-      let rand = min - 0.5 + Math.random() * (max - min + 1);
-      return Math.round(rand);
-    },
+    // getRandomInt(min, max) {
+    //   let rand = min - 0.5 + Math.random() * (max - min + 1);
+    //   return Math.round(rand);
+    // },
 
     //для формирования команд
     loadLocalArray(key) {
@@ -89,13 +86,14 @@ const app = Vue.createApp({
     },
 
     addPlayerToList() {
-      if (this.validateInput(this.input).result) {
+      if (this.validateInput(this.$refs.input.value).result) {
         this.error.show = false;
-        this.players.push(this.input);
-        this.input = "";
+        this.players.push(this.$refs.input.value);
+        console.log(this.$refs.input.value);
+        this.$refs.input.value = "";
         this.$refs.input.focus();
       } else {
-        this.error.desc = this.validateInput(this.input).desc;
+        this.error.desc = this.validateInput(this.$refs.input.value).desc;
         this.error.show = true;
       }
     },
@@ -129,7 +127,7 @@ const app = Vue.createApp({
         let buffer = array.slice(0);
         this.error.show = false;
         while (buffer.length > 0) {
-          let rnd = this.getRandomInt(0, buffer.length - 1);
+          let rnd = getRandomInt(0, buffer.length - 1);
           this.teams[0].members.length <= this.teams[1].members.length
             ? this.teams[0].members.push(buffer[rnd])
             : this.teams[1].members.push(buffer[rnd]);
@@ -141,7 +139,7 @@ const app = Vue.createApp({
         this.screens.players = false;
         this.screens.teams = true;
       } else {
-        this.error.desc = this.validateInput(this.input).desc;
+        this.error.desc = this.validateInput(this.$refs.input.value).desc;
         this.error.show = true;
       }
     },
@@ -172,7 +170,7 @@ const app = Vue.createApp({
       let buffer = source.slice();
       let result = [];
       for (let i = 0; i < count * this.players.length; i++) {
-        rnd = this.getRandomInt(0, parseInt(buffer.length) - 1);
+        rnd = getRandomInt(0, parseInt(buffer.length) - 1);
         result.push(buffer[rnd]);
         buffer.splice(rnd, 1);
       }
@@ -180,7 +178,7 @@ const app = Vue.createApp({
     },
 
     setTurnOrder() {
-      return this.getRandomInt(0, 1);
+      return getRandomInt(0, 1);
     },
 
     //для этапов игры
@@ -198,7 +196,7 @@ const app = Vue.createApp({
           this.teams[this.round.team].currentPlayer
         ];
       this.round.method =
-        this.gameMethods[this.getRandomInt(0, this.gameMethods.length - 1)];
+        this.gameMethods[getRandomInt(0, this.gameMethods.length - 1)];
       console.log(this.words);
     },
 
@@ -219,12 +217,39 @@ const app = Vue.createApp({
       this.countTimer();
     },
 
+    pressPass() {
+      if (this.words.length > 1) {
+        this.round.pass.push(this.round.word);
+        this.words.shift();
+        this.round.word = this.words[0];
+      } else {
+        this.round.pass.push(this.round.word);
+        this.words.shift();
+        this.endRound();
+      }
+    },
+    pressFail() {
+      this.round.fail.push(this.round.word);
+      this.words.push(this.round.word);
+      this.words.shift();
+      if (this.round.fail.length == 3) this.endRound();
+      else {
+        this.round.word = this.words[0];
+      }
+    },
+
     endRound() {
       console.log("end");
+      this.round.timer = 0;
     },
   },
 });
 app.mount("#app");
+
+function getRandomInt(min, max) {
+  let rnd = min - 0.5 + Math.random() * (max - min + 1);
+  return Math.round(rnd);
+}
 
 // window.onbeforeunload = function () {
 //   return true;

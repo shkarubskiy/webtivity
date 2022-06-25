@@ -28,7 +28,6 @@
           <input
             class="players__input input"
             ref="input"
-            v-model="input"
             type="text"
             list="playersNames"
             placeholder=""
@@ -40,7 +39,7 @@
           <p class="players__text-red text" v-show="error.show">
             {{ error.desc }}
           </p>
-          <button class="players__button button" @click="addPlayerToList">
+          <button class="players__button button" @click="addPlayerToList()">
             Добавить
           </button>
           <ol class="players__list list" v-show="playersList">
@@ -97,8 +96,12 @@
             <div class="timer__line" :style="{ width:timerLineWidth }"></div>
           </div>
           <div class="round__container">
-            <button class="round__button-red button">Пропуск</button>
-            <button class="round__button-green button">Верно</button>
+            <button class="round__button-red button" @click="pressFail">
+              Пропуск
+            </button>
+            <button class="round__button-green button" @click="pressPass">
+              Верно
+            </button>
           </div>
         </section>
       </main>
