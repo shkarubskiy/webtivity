@@ -113,7 +113,9 @@
           <ol class="endround__list-red list">
             <li v-for="word in round.fail">{{ word }}</li>
           </ol>
-          <button class="endround__button button">Продолжить</button>
+          <button class="endround__button button" @click="nextRound()">
+            Продолжить
+          </button>
         </section>
       </main>
     </div>

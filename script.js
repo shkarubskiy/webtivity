@@ -40,6 +40,7 @@ const app = Vue.createApp({
         desc: "",
         show: false,
       }, //отображение ошибок
+      timer: null,
     };
   },
   computed: {
@@ -190,8 +191,12 @@ const app = Vue.createApp({
     },
 
     startPreround() {
-      if (this.round.team == 0) this.round.team == 1;
-      else this.round.team == 0;
+      // if (this.round.team == 0) this.round.team == 1;
+      // else this.round.team == 0;
+      // this.round.player =
+      //   this.teams[this.round.team].members[
+      //     this.teams[this.round.team].currentPlayer
+      //   ];
       this.round.player =
         this.teams[this.round.team].members[
           this.teams[this.round.team].currentPlayer
@@ -201,12 +206,22 @@ const app = Vue.createApp({
       this.round.pass = [];
       this.round.fail = [];
       this.screens.teams = false;
+      this.screens.endround = false;
       this.screens.preround = true;
     },
 
+    // countTimer() {
+    //   if (this.round.timer > 0) {
+    //     setTimeout(() => {
+    //       this.round.timer--;
+    //       this.countTimer();
+    //     }, 1000);
+    //   } else this.endRound();
+    // },
+
     countTimer() {
       if (this.round.timer > 0) {
-        setTimeout(() => {
+        this.timer = setTimeout(() => {
           this.round.timer--;
           this.countTimer();
         }, 1000);
@@ -236,24 +251,36 @@ const app = Vue.createApp({
       this.round.fail.push(this.round.word);
       this.words.push(this.round.word);
       this.words.shift();
-      if (this.round.fail.length == 3) this.endRound();
-      else {
+      if (this.round.fail.length == 3) {
+        clearTimeout(this.timer);
+        this.round.timer = 0;
+        this.endRound();
+      } else {
         this.round.word = this.words[0];
       }
     },
 
     endRound() {
-      this.round.timer = 0;
       if (
-        this.teams[this.round.team].currentPlayer !=
+        this.teams[this.round.team].currentPlayer <
         this.teams[this.round.team].members.length - 1
       )
         this.teams[this.round.team].currentPlayer++;
       else this.teams[this.round.team].currentPlayer = 0;
 
+      if (this.round.team == 0) this.round.team = 1;
+      else if (this.round.team == 1) this.round.team = 0;
       this.screens.round = false;
       this.screens.endround = true;
+      console.log(this.round.team);
     },
+
+    nextRound() {
+      if (this.words.length > 0) this.startPreround();
+      else this.gameOver();
+    },
+
+    gameOver() {},
   },
 });
 app.mount("#app");
