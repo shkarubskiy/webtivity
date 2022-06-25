@@ -104,6 +104,17 @@
             </button>
           </div>
         </section>
+        <section class="endround" v-show="screens.endround">
+          <p class="endround__text-big text">Угадано</p>
+          <ol class="endround__list-green list">
+            <li v-for="word in round.pass">{{ word }}</li>
+          </ol>
+          <p class="endround__text-big text">Пропущено</p>
+          <ol class="endround__list-red list">
+            <li v-for="word in round.fail">{{ word }}</li>
+          </ol>
+          <button class="endround__button button">Продолжить</button>
+        </section>
       </main>
     </div>
     <script src="words.js"></script>

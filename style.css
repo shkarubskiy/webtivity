@@ -225,3 +225,27 @@ body {
   color: #000000;
   background-color: #5bd7bc;
 }
+
+/* ENDROUND ====================================== */
+
+.endround > * {
+  margin-bottom: 16px;
+}
+
+.endround > *:last-child {
+  margin-bottom: 0;
+}
+
+.endround__text-big {
+  border-bottom: solid 2px;
+  border-color: #bfd2f2;
+  font-size: 32px;
+}
+
+.endround__list-green {
+  color: #5bd7bc;
+}
+
+.endround__list-red {
+  color: #ff6681;
+}

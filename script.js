@@ -34,6 +34,7 @@ const app = Vue.createApp({
         teams: false,
         preround: false,
         round: false,
+        endround: false,
       }, // данные отображения экранов
       error: {
         desc: "",
@@ -189,15 +190,18 @@ const app = Vue.createApp({
     },
 
     startPreround() {
-      this.screens.teams = false;
-      this.screens.preround = true;
+      if (this.round.team == 0) this.round.team == 1;
+      else this.round.team == 0;
       this.round.player =
         this.teams[this.round.team].members[
           this.teams[this.round.team].currentPlayer
         ];
       this.round.method =
         this.gameMethods[getRandomInt(0, this.gameMethods.length - 1)];
-      console.log(this.words);
+      this.round.pass = [];
+      this.round.fail = [];
+      this.screens.teams = false;
+      this.screens.preround = true;
     },
 
     countTimer() {
@@ -239,8 +243,9 @@ const app = Vue.createApp({
     },
 
     endRound() {
-      console.log("end");
       this.round.timer = 0;
+      this.screens.round = false;
+      this.screens.endround = true;
     },
   },
 });
