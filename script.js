@@ -244,6 +244,13 @@ const app = Vue.createApp({
 
     endRound() {
       this.round.timer = 0;
+      if (
+        this.teams[this.round.team].currentPlayer !=
+        this.teams[this.round.team].members.length - 1
+      )
+        this.teams[this.round.team].currentPlayer++;
+      else this.teams[this.round.team].currentPlayer = 0;
+
       this.screens.round = false;
       this.screens.endround = true;
     },
